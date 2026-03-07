@@ -1,5 +1,6 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/dobro10k2/devops-engineer-from-scratch-project-315/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/dobro10k2/devops-engineer-from-scratch-project-315/actions)
+[![CI](https://github.com/dobro10k2/devops-engineer-from-scratch-project-315/actions/workflows/ci.yml/badge.svg)](https://github.com/dobro10k2/devops-engineer-from-scratch-project-315/actions/workflows/ci.yml)
 
 
 # Hexlet Project — Bulletin Board (IaC)
@@ -32,6 +33,29 @@ Swagger API documentation:
 
 http://localhost:8080/swagger-ui/index.html
 
+---
+
+## Container Image
+
+Docker image can be published to a container registry (Docker Hub, GitHub Container Registry, etc.).
+
+Example image name:
+
+```
+ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315:latest
+
+```
+Pull the image:
+
+```
+docker pull ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315y:latest
+```
+
+Run the container:
+
+```
+docker run -p 8080:8080 ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315:latest
+```
 ---
 
 ## Original Project Documentation
