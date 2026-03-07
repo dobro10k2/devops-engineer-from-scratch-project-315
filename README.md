@@ -1,6 +1,6 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/dobro10k2/devops-engineer-from-scratch-project-315/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/dobro10k2/devops-engineer-from-scratch-project-315/actions)
-[![CI](https://github.com/dobro10k2/devops-engineer-from-scratch-project-315/actions/workflows/ci.yml/badge.svg)](https://github.com/dobro10k2/devops-engineer-from-scratch-project-315/actions/workflows/ci.yml)
+[![CI](https://github.com/dobro10k2/devops-engineer-from-scratch-project-315/actions/workflows/ci.yaml/badge.svg)](https://github.com/dobro10k2/devops-engineer-from-scratch-project-315/actions/workflows/ci.yaml)
 
 
 # Hexlet Project — Bulletin Board (IaC)
