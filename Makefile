@@ -34,7 +34,7 @@ docker-clean:
 	docker rmi $(IMAGE_NAME)
 
 ansible:
-	ansible-playbook playbook.yml --ask-vault-pass
+	ansible-playbook playbook.yml -e docker_tag=$(or $(docker_tag),$(GIT_SHA)) --ask-vault-pass
 
 deploy:
 	ansible-playbook playbook.yml -e docker_tag=$(or $(docker_tag),$(GIT_SHA)) --tags deploy --ask-vault-pass

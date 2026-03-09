@@ -9,6 +9,7 @@
     - docker_network
     - postgres
     - minio
+    - nginx
 
 - name: Deploy application
   hosts: servers
