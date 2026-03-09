@@ -35,6 +35,23 @@ http://localhost:8080/swagger-ui/index.html
 
 ---
 
+
+## Application URL
+
+The application is available at:
+
+```
+http://board.dobro10k2.ru:8080
+```
+
+Swagger API:
+
+```
+http://board.dobro10k2.ru:8080/swagger-ui/index.html
+```
+
+---
+
 ## Container Image
 
 Docker image can be published to a container registry (Docker Hub, GitHub Container Registry, etc.).
