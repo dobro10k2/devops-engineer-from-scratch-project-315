@@ -48,7 +48,7 @@ ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315:latest
 Pull the image:
 
 ```
-docker pull ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315y:latest
+docker pull ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315:latest
 ```
 
 Run the container:
@@ -56,6 +56,38 @@ Run the container:
 ```
 docker run -p 8080:8080 ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315:latest
 ```
+---
+
+## Infrastructure setup
+
+Server configuration is managed with Ansible.
+
+Requirements:
+
+- Ansible
+- SSH access to the server
+
+Run playbook:
+
+```
+make ansible
+```
+
+This will:
+
+- install Docker Engine
+- install docker compose plugin
+- add user `dobro10k2` to docker group
+- configure firewall (UFW)
+
+Allowed ports:
+
+- 22 SSH
+- 80 HTTP
+- 443 HTTPS
+- 8080 application
+- 9090 Spring Actuator
+
 ---
 
 ## Original Project Documentation

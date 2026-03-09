@@ -1,0 +1,7 @@
+---
+- name: Configure server
+  hosts: servers
+
+  roles:
+    - docker_setup
+    - firewall

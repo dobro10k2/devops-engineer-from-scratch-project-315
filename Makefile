@@ -32,3 +32,6 @@ docker-stop:
 
 docker-clean:
 	docker rmi $(IMAGE_NAME)
+
+ansible:
+	ansible-playbook playbook.yml
