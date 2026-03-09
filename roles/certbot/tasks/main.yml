@@ -7,21 +7,18 @@
     state: present
     update_cache: true
 
-
-- name: Obtain Let's Encrypt certificate
+- name: Obtain certificate
   ansible.builtin.command: >
-    certbot --nginx
+    certbot certonly --nginx
     -d {{ domain_name }}
     --non-interactive
     --agree-tos
     -m {{ certbot_email }}
-    --redirect
   args:
-    creates: /etc/letsencrypt/live/{{ domain_name }}/fullchain.pem
+    creates: "/etc/letsencrypt/live/{{ domain_name }}/fullchain.pem"
 
-
-- name: Enable automatic renewal
+- name: Enable certbot timer
   ansible.builtin.systemd:
     name: certbot.timer
-    state: started
     enabled: true
+    state: started
