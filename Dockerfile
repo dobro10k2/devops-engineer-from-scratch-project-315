@@ -1,9 +1,23 @@
-# ---------- Builder stage ----------
+# ---------- Frontend build ----------
+FROM node:20-alpine AS frontend-builder
+
+WORKDIR /frontend
+
+COPY frontend/package*.json ./
+
+RUN npm install
+
+COPY frontend .
+
+RUN npm run build
+
+
+
+# ---------- Backend build ----------
 FROM eclipse-temurin:21-jdk-alpine AS builder
 
 WORKDIR /app
 
-# Copy gradle configuration
 COPY gradlew .
 COPY gradle gradle
 COPY build.gradle.kts .
@@ -12,16 +26,20 @@ COPY versions.properties .
 
 RUN chmod +x gradlew
 
-# Download dependencies (cached layer)
+# cache dependencies
 RUN ./gradlew dependencies --no-daemon
 
-# Copy source code
+# copy source
 COPY src src
 
-# Build application
+# copy frontend build into spring static dir
+COPY --from=frontend-builder /frontend/dist src/main/resources/static
+
 RUN ./gradlew build -x test --no-daemon
 
-# ---------- Runtime stage ----------
+
+
+# ---------- Runtime ----------
 FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app

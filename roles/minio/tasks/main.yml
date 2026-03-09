@@ -1,0 +1,29 @@
+---
+- name: Create MinIO data directory
+  ansible.builtin.file:
+    path: "{{ minio_data_dir }}"
+    state: directory
+    owner: dobro10k2
+    group: docker
+    mode: "0755"
+
+- name: Run MinIO container
+  community.docker.docker_container:
+    name: "{{ minio_container_name }}"
+    image: minio/minio:latest
+    restart_policy: always
+
+    command: server /data --console-address ":9001"
+
+    env:
+      MINIO_ROOT_USER: "{{ vault_env_vars.STORAGE_S3_ACCESSKEY }}"
+      MINIO_ROOT_PASSWORD: "{{ vault_env_vars.STORAGE_S3_SECRETKEY }}"
+
+    volumes:
+      - "{{ minio_data_dir }}:/data"
+
+    networks:
+      - name: "{{ docker_network }}"
+
+    ports:
+      - "127.0.0.1:9001:9001"

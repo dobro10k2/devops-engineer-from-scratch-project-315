@@ -1,4 +1,8 @@
 ---
+- name: Set docker tag
+  set_fact:
+    image_tag: "{{ docker_tag | default('latest') }}"
+
 - name: Create log directory
   ansible.builtin.file:
     path: "{{ app_logs_dir }}"
@@ -10,13 +14,14 @@
 - name: Pull docker image
   community.docker.docker_image:
     name: "{{ docker_image }}"
-    tag: "{{ docker_tag }}"
+    tag: "{{ image_tag }}"
     source: pull
 
 - name: Run application container
   community.docker.docker_container:
     name: "{{ app_name }}"
-    image: "{{ docker_image }}:{{ docker_tag }}"
+    image: "{{ docker_image }}:{{ image_tag }}"
+    image_name_mismatch: recreate
     restart_policy: always
     recreate: true
 
