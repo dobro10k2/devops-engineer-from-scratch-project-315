@@ -20,16 +20,6 @@
     rule: allow
     port: "443"
 
-- name: Allow application port
-  ufw:
-    rule: allow
-    port: "8080"
-
-- name: Allow actuator port
-  ufw:
-    rule: allow
-    port: "9090"
-
 - name: Enable firewall
   ufw:
     state: enabled

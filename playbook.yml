@@ -10,6 +10,7 @@
     - postgres
     - minio
     - nginx
+    - certbot
 
 - name: Deploy application
   hosts: servers
