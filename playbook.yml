@@ -1,9 +1,13 @@
 ---
 - name: Configure server
   hosts: servers
+  vars_files:
+    - group_vars/vault.yml
   roles:
     - docker_setup
     - firewall
+    - docker_network
+    - postgres
 
 - name: Deploy application
   hosts: servers

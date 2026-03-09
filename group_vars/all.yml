@@ -4,13 +4,23 @@ app_name: bulletin-board
 docker_image: ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315
 docker_tag: latest
 
+docker_network: bulletin-network
+
 app_port: 8080
 management_port: 9090
 
-app_data_dir: /opt/bulletin
 app_logs_dir: /opt/bulletin/logs
+
+postgres_container_name: postgres
+postgres_db: bulletins
+postgres_user: postgres
+postgres_data_dir: /opt/postgres/data
+
+spring_datasource_url: jdbc:postgresql://postgres:5432/bulletins
 
 env_vars:
   SPRING_PROFILES_ACTIVE: dev
+  SPRING_DATASOURCE_URL: "{{ spring_datasource_url }}"
+  SPRING_DATASOURCE_USERNAME: "{{ postgres_user }}"
   MANAGEMENT_SERVER_PORT: "{{ management_port | string }}"
   JAVA_OPTS: "-Xms256m -Xmx512m"
