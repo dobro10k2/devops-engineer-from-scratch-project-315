@@ -1,7 +1,14 @@
 ---
 - name: Configure server
   hosts: servers
-
   roles:
     - docker_setup
     - firewall
+
+- name: Deploy application
+  hosts: servers
+  vars_files:
+    - group_vars/vault.yml
+  roles:
+    - role: docker_deploy
+      tags: deploy

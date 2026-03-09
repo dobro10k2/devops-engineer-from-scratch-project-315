@@ -1,0 +1,35 @@
+---
+- name: Create application directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: dobro10k2
+    group: docker
+    mode: "0755"
+  loop:
+    - "{{ app_data_dir }}"
+    - "{{ app_logs_dir }}"
+
+- name: Pull docker image
+  community.docker.docker_image:
+    name: "{{ docker_image }}"
+    tag: "{{ docker_tag }}"
+    source: pull
+
+- name: Run container
+  community.docker.docker_container:
+    name: "{{ app_name }}"
+    image: "{{ docker_image }}:{{ docker_tag }}"
+    restart_policy: always
+
+    ports:
+      - "{{ app_port }}:8080"
+      - "{{ management_port }}:9090"
+
+    env: "{{ env_vars | combine(vault_env_vars) }}"
+
+    volumes:
+      - "{{ app_data_dir }}:/data"
+      - "{{ app_logs_dir }}:/logs"
+
+    recreate: true

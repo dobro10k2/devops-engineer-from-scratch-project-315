@@ -1,0 +1,16 @@
+---
+app_name: bulletin-board
+
+docker_image: ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315
+docker_tag: latest
+
+app_port: 8080
+management_port: 9090
+
+app_data_dir: /opt/bulletin
+app_logs_dir: /opt/bulletin/logs
+
+env_vars:
+  SPRING_PROFILES_ACTIVE: dev
+  MANAGEMENT_SERVER_PORT: "{{ management_port | string }}"
+  JAVA_OPTS: "-Xms256m -Xmx512m"

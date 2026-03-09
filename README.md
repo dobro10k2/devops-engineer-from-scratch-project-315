@@ -90,6 +90,43 @@ Allowed ports:
 
 ---
 
+## Deployment
+
+The application is deployed using Ansible and Docker.
+
+Deploy application:
+
+```
+make deploy
+```
+
+Deployment actions:
+
+- pulls latest Docker image from GHCR
+- recreates container
+- applies environment variables
+- mounts persistent directories
+
+Persistent directories:
+
+/opt/bulletin
+/opt/bulletin/logs
+
+
+Rollback example:
+
+```
+docker_tag=<commit_sha> make deploy
+```
+
+Secrets are stored in **Ansible Vault**:
+
+```
+group_vars/vault.yml
+```
+
+---
+
 ## Original Project Documentation
 
 The section below contains the original project documentation.

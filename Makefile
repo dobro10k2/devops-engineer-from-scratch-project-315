@@ -35,3 +35,6 @@ docker-clean:
 
 ansible:
 	ansible-playbook playbook.yml
+
+deploy:
+	ansible-playbook playbook.yml --tags deploy --ask-vault-pass
