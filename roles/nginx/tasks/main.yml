@@ -3,7 +3,7 @@
   ansible.builtin.apt:
     name: nginx
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: Enable nginx
   ansible.builtin.service:
