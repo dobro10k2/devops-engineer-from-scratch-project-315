@@ -5,113 +5,172 @@
 
 # Hexlet Project — Bulletin Board (IaC)
 
-Dockerized bulletin board service built with Spring Boot and a React admin frontend.
+Dockerized bulletin board service built with **Spring Boot** and a **React Admin** frontend.
 
-The result of this repository is a **Docker container image** that runs the bulletin board application.
+The goal of this project is to build a production-like deployment pipeline using DevOps tools: **Docker, CI/CD, Ansible, Nginx, HTTPS and S3 storage**.
 
 ---
 
-## Quick Start (Docker)
+# Application
 
-Build the Docker image:
+Production URL:
 
-```bash
+<https://board.dobro10k2.ru>
+
+Swagger API:
+
+<https://board.dobro10k2.ru/swagger-ui/index.html>
+
+---
+
+# Quick Start (Docker)
+
+Build image:
+
+```
 make docker-build
 ```
 
-Run the container:
+Run container:
 
-```bash
+```
 make docker-run
 ```
 
 Application will be available at:
 
-http://localhost:8080
+<http://localhost:8080>
 
-Swagger API documentation:
+Swagger:
 
-http://localhost:8080/swagger-ui/index.html
-
----
-
-
-## Application URL
-
-The application is available at:
-
-```
-http://board.dobro10k2.ru:8080
-```
-
-Swagger API:
-
-```
-http://board.dobro10k2.ru:8080/swagger-ui/index.html
-```
+<http://localhost:8080/swagger-ui/index.html>
 
 ---
 
-## Container Image
+# Container Image
 
-Docker image can be published to a container registry (Docker Hub, GitHub Container Registry, etc.).
-
-Example image name:
+Docker image is published to **GitHub Container Registry**.
 
 ```
-ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315:latest
-
+ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315
 ```
-Pull the image:
+
+Pull image:
 
 ```
 docker pull ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315:latest
 ```
 
-Run the container:
+Run container:
 
 ```
 docker run -p 8080:8080 ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315:latest
 ```
+
+Image tags:
+
+latest  
+git sha
+
+Example:
+
+ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315:6046ecf
+
 ---
 
-## Infrastructure setup
+# CI/CD
 
-Server configuration is managed with Ansible.
+GitHub Actions pipeline performs:
 
-Requirements:
+- code quality check
+- unit tests
+- docker image build
+- push image to GHCR
 
-- Ansible
-- SSH access to the server
+---
 
-Run playbook:
+# Infrastructure (IaC)
+
+Infrastructure configuration is managed using **Ansible**.
+
+Run provisioning:
 
 ```
 make ansible
 ```
 
-This will:
+The playbook performs:
 
 - install Docker Engine
-- install docker compose plugin
-- add user `dobro10k2` to docker group
+- configure docker user
 - configure firewall (UFW)
-
-Allowed ports:
-
-- 22 SSH
-- 80 HTTP
-- 443 HTTPS
-- 8080 application
-- 9090 Spring Actuator
+- create docker network
+- deploy PostgreSQL container
+- deploy MinIO S3 storage
+- configure Nginx reverse proxy
+- issue Let's Encrypt HTTPS certificate
+- deploy application container
 
 ---
 
-## Deployment
+# Server Ports
 
-The application is deployed using Ansible and Docker.
+Allowed external ports:
 
-Deploy application:
+22   SSH  
+80   HTTP  
+443  HTTPS  
+
+Internal services:
+
+8080  application  
+5432  postgres  
+9000  minio  
+9090  spring actuator  
+
+---
+
+# Reverse Proxy
+
+Nginx is used as a reverse proxy.
+
+Responsibilities:
+
+- HTTPS termination
+- HTTP → HTTPS redirect
+- proxy requests to application
+- serve uploaded images
+
+Static file path:
+
+/storage/*
+
+---
+
+# Object Storage (S3)
+
+User images are stored in **MinIO** (S3 compatible storage).
+
+Bucket:
+
+bulletins
+
+Files are accessible via:
+
+https://board.dobro10k2.ru/storage/<object>
+
+Environment configuration:
+
+STORAGE_S3_BUCKET=bulletins  
+STORAGE_S3_REGION=us-east-1  
+STORAGE_S3_ENDPOINT=http://minio:9000  
+STORAGE_S3_CDNURL=https://board.dobro10k2.ru/storage  
+
+---
+
+# Deployment
+
+Application deployment is automated via Ansible.
 
 ```
 make deploy
@@ -119,28 +178,53 @@ make deploy
 
 Deployment actions:
 
-- pulls latest Docker image from GHCR
-- recreates container
-- applies environment variables
-- mounts persistent directories
+- pull docker image from GHCR
+- recreate container
+- apply environment variables
+- attach persistent volumes
 
 Persistent directories:
 
-/opt/bulletin
-/opt/bulletin/logs
-
+/opt/bulletin  
+/opt/bulletin/logs  
 
 Rollback example:
 
-```
 docker_tag=<commit_sha> make deploy
-```
 
-Secrets are stored in **Ansible Vault**:
+---
 
-```
+# Secrets
+
+Secrets are stored in **Ansible Vault**.
+
 group_vars/vault.yml
-```
+
+Used for:
+
+- database password
+- S3 access keys
+- application secrets
+
+---
+
+# Monitoring
+
+Spring Boot Actuator endpoints:
+
+/actuator/health  
+/actuator/metrics  
+/actuator/prometheus  
+
+Management port:
+
+9090
+
+---
+
+# Repository
+
+<https://github.com/dobro10k2/devops-engineer-from-scratch-project-315>
 
 ---
 
