@@ -28,30 +28,6 @@ Swagger API:
 
 ---
 
-# Quick Start (Docker)
-
-Build image:
-
-```
-make docker-build
-```
-
-Run container:
-
-```
-make docker-run
-```
-
-Application will be available at:
-
-<http://localhost:8080>
-
-Swagger:
-
-<http://localhost:8080/swagger-ui/index.html>
-
----
-
 # Container Image
 
 Docker image is published to **GitHub Container Registry**.
@@ -74,12 +50,16 @@ docker run -p 8080:8080 ghcr.io/dobro10k2/project-devops-deploy:latest
 
 Image tags:
 
+```
 latest 
 git sha
+```
 
 Example:
 
+```
 ghcr.io/dobro10k2/project-devops-deploy:6046ecf
+```
 
 ---
 
@@ -133,8 +113,10 @@ Deployment actions:
 
 Persistent directories:
 
+```
 /opt/bulletin
 /opt/bulletin/logs
+```
 
 ## Rollback
 
@@ -156,16 +138,20 @@ make rollback TAG=6046ecf
 
 Allowed external ports:
 
+```
 22   SSH
 80   HTTP
 443  HTTPS
+```
 
 Internal services:
 
+```
 8080  application
 5432  postgres
 9000  minio
 9090  spring actuator
+```
 
 ---
 
@@ -182,7 +168,9 @@ Responsibilities:
 
 Static file path:
 
+```
 /storage/*
+```
 
 ---
 
@@ -192,7 +180,9 @@ User images are stored in **MinIO** (S3 compatible storage).
 
 Bucket:
 
+```
 bulletins
+```
 
 Files are accessible via:
 
@@ -200,10 +190,12 @@ https://board.dobro10k2.ru/storage/<object>
 
 Environment configuration:
 
+```
 STORAGE_S3_BUCKET=bulletins
 STORAGE_S3_REGION=us-east-1
 STORAGE_S3_ENDPOINT=http://minio:9000
 STORAGE_S3_CDNURL=https://board.dobro10k2.ru/storage
+```
 
 ---
 
@@ -211,7 +203,9 @@ STORAGE_S3_CDNURL=https://board.dobro10k2.ru/storage
 
 Secrets are stored in **Ansible Vault**.
 
+```
 group_vars/vault.yml
+```
 
 Used for:
 
@@ -225,9 +219,11 @@ Used for:
 
 Spring Boot Actuator endpoints:
 
+```
 /actuator/health
 /actuator/metrics
 /actuator/prometheus
+```
 
 Management port:
 
