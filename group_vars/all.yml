@@ -1,7 +1,7 @@
 ---
 app_name: bulletin-board
 
-docker_image: ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315
+docker_image: ghcr.io/dobro10k2/project-devops-deploy
 
 docker_network: bulletin-network
 

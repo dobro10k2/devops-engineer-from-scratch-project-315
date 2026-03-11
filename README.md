@@ -1,6 +1,5 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/dobro10k2/devops-engineer-from-scratch-project-315/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/dobro10k2/devops-engineer-from-scratch-project-315/actions)
-[![CI](https://github.com/dobro10k2/devops-engineer-from-scratch-project-315/actions/workflows/ci.yaml/badge.svg)](https://github.com/dobro10k2/devops-engineer-from-scratch-project-315/actions/workflows/ci.yaml)
 
 
 # Hexlet Project — Bulletin Board (IaC)
@@ -8,6 +7,12 @@
 Dockerized bulletin board service built with **Spring Boot** and a **React Admin** frontend.
 
 The goal of this project is to build a production-like deployment pipeline using DevOps tools: **Docker, CI/CD, Ansible, Nginx, HTTPS and S3 storage**.
+
+---
+
+Application source code:
+
+<https://github.com/dobro10k2/project-devops-deploy>
 
 ---
 
@@ -52,29 +57,29 @@ Swagger:
 Docker image is published to **GitHub Container Registry**.
 
 ```
-ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315
+ghcr.io/dobro10k2/project-devops-deploy
 ```
 
 Pull image:
 
 ```
-docker pull ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315:latest
+docker pull ghcr.io/dobro10k2/project-devops-deploy:latest
 ```
 
 Run container:
 
 ```
-docker run -p 8080:8080 ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315:latest
+docker run -p 8080:8080 ghcr.io/dobro10k2/project-devops-deploy:latest
 ```
 
 Image tags:
 
-latest  
+latest 
 git sha
 
 Example:
 
-ghcr.io/dobro10k2/devops-engineer-from-scratch-project-315:6046ecf
+ghcr.io/dobro10k2/project-devops-deploy:6046ecf
 
 ---
 
@@ -111,22 +116,52 @@ The playbook performs:
 - issue Let's Encrypt HTTPS certificate
 - deploy application container
 
+## Deployment
+
+Application deployment is automated via Ansible.
+
+```
+make deploy
+```
+
+Deployment actions:
+
+- pull docker image from GHCR
+- recreate container
+- apply environment variables
+- attach persistent volumes
+
+Persistent directories:
+
+/opt/bulletin
+/opt/bulletin/logs
+
+## Rollback
+
+Deploy a specific image version:
+
+make rollback TAG=<git_sha>
+
+Example:
+
+make rollback TAG=6046ecf
+
 ---
 
 # Server Ports
 
 Allowed external ports:
 
-22   SSH  
-80   HTTP  
-443  HTTPS  
+22   SSH
+80   HTTP
+443  HTTPS
 
 Internal services:
 
-8080  application  
-5432  postgres  
-9000  minio  
-9090  spring actuator  
+8080  application
+5432  postgres
+9000  minio
+9090  spring actuator
 
 ---
 
@@ -161,36 +196,10 @@ https://board.dobro10k2.ru/storage/<object>
 
 Environment configuration:
 
-STORAGE_S3_BUCKET=bulletins  
-STORAGE_S3_REGION=us-east-1  
-STORAGE_S3_ENDPOINT=http://minio:9000  
-STORAGE_S3_CDNURL=https://board.dobro10k2.ru/storage  
-
----
-
-# Deployment
-
-Application deployment is automated via Ansible.
-
-```
-make deploy
-```
-
-Deployment actions:
-
-- pull docker image from GHCR
-- recreate container
-- apply environment variables
-- attach persistent volumes
-
-Persistent directories:
-
-/opt/bulletin  
-/opt/bulletin/logs  
-
-Rollback example:
-
-docker_tag=<commit_sha> make deploy
+STORAGE_S3_BUCKET=bulletins
+STORAGE_S3_REGION=us-east-1
+STORAGE_S3_ENDPOINT=http://minio:9000
+STORAGE_S3_CDNURL=https://board.dobro10k2.ru/storage
 
 ---
 
@@ -212,9 +221,9 @@ Used for:
 
 Spring Boot Actuator endpoints:
 
-/actuator/health  
-/actuator/metrics  
-/actuator/prometheus  
+/actuator/health
+/actuator/metrics
+/actuator/prometheus
 
 Management port:
 
