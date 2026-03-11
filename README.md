@@ -140,11 +140,15 @@ Persistent directories:
 
 Deploy a specific image version:
 
+```
 make rollback TAG=<git_sha>
+```
 
 Example:
 
+```
 make rollback TAG=6046ecf
+```
 
 ---
 
